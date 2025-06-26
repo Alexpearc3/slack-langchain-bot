@@ -1,0 +1,43 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Environment variable files
+.env
+.env.*
+
+# macOS and system files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# SQLite and other local DBs
+*.db
+
+# Python tooling
+*.egg-info/
+dist/
+build/
+
+# Secrets and credentials
+token.json
+token.pickle
+credentials.json
+
+# Logs and temp
+*.log
+*.tmp
+
+# Custom bot config or local states (if applicable)
+config.yaml
+local_settings.py
