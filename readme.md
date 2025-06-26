@@ -1,125 +1,135 @@
-🤖 Slack LangChain + Gemini Hybrid Bot
-This project is a hybrid Slack bot that combines:
+# Slack LangChain + Gemini Hybrid Bot
 
-✅ Langchain (via Gemini) for structured agent tools like meeting scheduling, call reminders, etc.
+A hybrid Slack bot that combines LangChain agent tools with Google Gemini 2.0 Flash for advanced natural language and image-based Slack interactions.
 
-🧠 Google Gemini 2.0 Flash for handling image-based input directly
+---
 
-📦 Prerequisites
-Ensure you have:
+## Features
 
-Python 3.10+ installed
+- **Schedule meetings**  
+  `@bot schedule a 30 min meeting with Zeina tomorrow at 1pm`
 
-Slack App with bot token
+- **Generate agendas**  
+  `@bot what should the agenda be?`
 
-Google Cloud project with:
+- **Start Slack calls**  
+  `@bot start a call with Alex`
 
-Gemini API key (Generative Language API enabled)
+- **Set reminders**  
+  `@bot remind everyone about the demo at 3pm`
 
-Google Calendar API enabled
+- **Image analysis (Gemini)**  
+  Upload an image and mention the bot with a caption
 
-credentials.json file downloaded
+- **Fallback Q&A**  
+  `@bot what's the capital of Italy?`
 
-Cloudflare Tunnel (optional, for local development webhook access)
+---
 
-⚙️ 1. Environment Setup
-Install Python dependencies:
+## Prerequisites
 
-powershell
-Copy
-Edit
+- Python 3.10+
+- Slack App with:
+  - Bot token
+  - Enabled Event Subscriptions
+- Google Cloud project with:
+  - Generative Language API enabled (for Gemini)
+  - Google Calendar API enabled
+  - OAuth client (`credentials.json`)
+- (Optional) Cloudflare Tunnel for local webhook exposure
+
+---
+
+## Setup Instructions
+
+### 1. Clone & Install
+
+```bash
+git clone https://github.com/Alexpearc3/slack-langchain-bot.git
+cd slack-langchain-bot
 pip install -r requirements.txt
-Create a .env file in your project root with:
+```
 
-env
-Copy
-Edit
+### 2. Create `.env` File
+
+In the project root, create a file named `.env`:
+
+```
 SLACK_BOT_TOKEN=xoxb-your-slack-bot-token
 GEMINI_API_KEY=your-gemini-api-key
-Place your Google API credentials file:
+```
 
-bash
-Copy
-Edit
-credentials.json  # (client secrets for Calendar)
-🧠 2. Slack App Setup
-In your Slack App dashboard:
+### 3. Slack App Configuration
 
-Event Subscriptions:
+In your [Slack App dashboard](https://api.slack.com/apps):
 
-Enable Events
+- Enable **Event Subscriptions**
+  - Request URL: `https://<your-tunnel>.trycloudflare.com/slack/events`
+  - Subscribe to bot events: `app_mention`
 
-Request URL: https://your-cloudflare-tunnel-url/slack/events
+- Add **OAuth Scopes** under *OAuth & Permissions*:
+  - `chat:write`
+  - `users:read`
+  - `files:read`
 
-Subscribe to bot events: app_mention
+- *(Optional)* Enable **Interactivity** if you plan to support buttons or modals.
 
-OAuth & Permissions:
+### 4. Google Calendar Setup
 
-Add scopes:
+- Enable the **Google Calendar API** in Google Cloud Console
+- Create an OAuth 2.0 client ID (Desktop app type)
+- Download `credentials.json` and place it in the root of the project
+- On first run, you'll be prompted to authorize access. A `token.pickle` will be created and reused.
 
-chat:write
+---
 
-users:read
+## Running the Bot
 
-files:read
+### Local development (test mode only)
 
-Interactivity (optional): Enable if you want buttons in future.
+Run the bot locally using:
 
-Update the bot name or channel behavior by modifying:
-
-python
-Copy
-Edit
-slack_client.chat_postMessage(channel="#general", ...)  # Change #general as needed
-📅 3. Google Calendar Setup
-Create project & enable:
-
-Google Calendar API
-
-OAuth 2.0 client ID (for Desktop App)
-
-Download credentials.json to root
-
-On first run, you'll be prompted to authorize access. A token.pickle will be saved for reuse.
-
-🚀 4. Run the Bot (PowerShell)
-powershell
-Copy
-Edit
+```
 python hybrid_app.py
-For public Slack interaction, use Cloudflare Tunnel:
+```
 
-powershell
-Copy
-Edit
-cloudflared tunnel --url http://localhost:3000
-Then set Slack’s Request URL to:
+This will start your Flask app on `http://localhost:3000`.
 
-bash
-Copy
-Edit
+---
+
+### Public Slack interaction (with Cloudflare Tunnel)
+
+To expose your local bot to Slack, run:
+
+```
+python setup_tunnel.py
+```
+
+This will automatically download and start a Cloudflare tunnel pointing to `http://localhost:3000`.
+
+Once the tunnel is running, copy the generated `https://<your-subdomain>.trycloudflare.com` URL and set your Slack App's **Event Request URL** to:
+
+```
 https://<your-subdomain>.trycloudflare.com/slack/events
-🧪 Features
-Feature	Trigger Example
-Schedule meeting	“@bot schedule a 30 min meeting with Zeina tomorrow 1pm”
-Generate agenda	“@bot what should the agenda be?”
-Start Slack call	“@bot start a call with Alex”
-Slack reminder	“@bot remind everyone about the demo at 3pm”
-Image analysis (Gemini)	Upload an image and mention bot with a caption
-General fallback question	“@bot what’s the capital of Italy?”
+```
 
-🛠️ File Overview
-File	Purpose
-hybrid_app.py	Main Flask + LangChain + Gemini Slack bot
-google_calendar.py	Logic for calendar scheduling
-.env	Secret tokens (not committed)
-credentials.json	Google OAuth client secrets
-token.pickle	Auto-generated credentials from first run
+This allows your Slack bot to receive real-time events from Slack while running locally.
 
-🧹 To Do
- Add persistence to conversation history
+---
 
- Support buttons or slash commands
+## Project Structure
 
- Add logging to file or cloud
+- `hybrid_app.py` — Main Flask app (LangChain + Gemini)
+- `google_calendar.py` — Google Calendar integration
+- `.env` — Secret keys and tokens (not committed)
+- `credentials.json` — Google OAuth client secrets
+- `token.pickle` — Auto-generated access token from first OAuth run
+- `requirements.txt` — Python dependency list
 
+---
+
+## To Do
+
+- [ ] Add persistent memory support
+- [ ] Add Slack buttons or slash command support
+- [ ] Add structured logging (file or cloud-based)
