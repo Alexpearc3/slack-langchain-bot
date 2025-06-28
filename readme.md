@@ -12,8 +12,8 @@ A hybrid Slack bot that combines LangChain agent tools with Google Gemini 2.0 Fl
 - **Generate agendas**  
   `@bot what should the agenda be?`
 
-- **Start Slack calls**  
-  `@bot start a call with Alex`
+- **Start Slack calls**  WIP
+  `@bot start a call with Alex` 
 
 - **Set reminders**  
   `@bot remind everyone about the demo at 3pm`
@@ -21,7 +21,7 @@ A hybrid Slack bot that combines LangChain agent tools with Google Gemini 2.0 Fl
 - **Image analysis (Gemini)**  
   Upload an image and mention the bot with a caption
 
-- **Fallback Q&A**  
+- **General Queries**  
   `@bot what's the capital of Italy?`
 
 ---
