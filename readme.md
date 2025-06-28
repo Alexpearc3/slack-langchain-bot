@@ -90,7 +90,7 @@ In your [Slack App dashboard](https://api.slack.com/apps):
 Run the bot locally using:
 
 ```
-python hybrid_app.py
+python app.py
 ```
 
 This will start your Flask app on `http://localhost:3000`.
