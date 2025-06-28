@@ -119,12 +119,27 @@ This allows your Slack bot to receive real-time events from Slack while running 
 
 ## Project Structure
 
-- `hybrid_app.py` — Main Flask app (LangChain + Gemini)
-- `google_calendar.py` — Google Calendar integration
+- `app.py` — Entry point for the Flask app (LangChain + Gemini agent interface)
+- `Hybrid_app.py` — Legacy or alternative app entry (can be deprecated or integrated)
+- `agents.py` — LangChain agent definitions and initialization
+- `auth.py` — Google OAuth2.0 logic for calendar integration
+- `database.py` — SQLite database setup and interaction
+- `google_calendar.py` — Google Calendar API integration
+- `memory.py` — Conversation memory management (e.g. SQLite-backed memory)
+- `slack.py` — Slack event handling and message routing
+- `tools/` — Modular LangChain tools used by the agent:
+  - `general.py` — Generic utilities and context tools
+  - `reminders.py` — Set, edit, and cancel reminders
+  - `scheduling.py` — Meeting time parsing and logic
+  - `slack_tools.py` — Slack-specific helper tools (e.g. DM, threads)
+  - `utils.py` — Shared helper functions
+- `vision.py` — Image input handling using Gemini Vision API
 - `.env` — Secret keys and tokens (not committed)
 - `credentials.json` — Google OAuth client secrets
-- `token.pickle` — Auto-generated access token from first OAuth run
+- `token.pickle` — Auto-generated token from first Google OAuth run
 - `requirements.txt` — Python dependency list
+- `readme.md` — Project overview and instructions
+- `setup_tunnel.py` — Optional script for localtunnel or ngrok setup
 
 ---
 
